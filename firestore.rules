@@ -1,0 +1,50 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Check if user is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // Check if user is accessing their own document
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    // Users collection
+    match /users/{userId} {
+      // Anyone can read basic profile info, but only the owner can read everything
+      allow read: if true;
+      // Users cannot directly write to their balance or XP from the client
+      allow create: if isOwner(userId);
+      allow update: if isOwner(userId)
+                    && !request.resource.data.diff(resource.data).affectedKeys()
+                        .hasAny(['balance', 'xp', 'level', 'inventory', 'achievements']);
+      allow delete: if false; // Deletion handled by cloud function
+    }
+
+    // Game Scores
+    match /scores/{scoreId} {
+      // Anyone can read scores for leaderboards
+      allow read: if true;
+      // Clients CANNOT write scores directly. Must go through the submitScore Cloud Function.
+      allow write: if false;
+    }
+
+    // Transactions
+    match /transactions/{transactionId} {
+      // Users can read their own transactions
+      allow read: if isOwner(resource.data.userId);
+      // Transactions are only written by Cloud Functions
+      allow write: if false;
+    }
+
+    // Game Definitions (Registry)
+    match /games/{gameId} {
+      allow read: if true;
+      allow write: if false; // Admin only
+    }
+  }
+}

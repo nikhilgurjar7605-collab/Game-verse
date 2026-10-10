@@ -1,0 +1,87 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-background: #111318;
+  --color-surface-secondary: #171A21;
+  --color-surface: #20242D;
+  --color-primary: #A78BFA;
+  --color-secondary: #70E1F5;
+  --color-text: #F4F5F7;
+  --color-text-muted: #A4A9B6;
+
+  --shadow-neu-raised: 4px 4px 10px rgba(0, 0, 0, 0.5), -4px -4px 10px rgba(255, 255, 255, 0.05);
+  --shadow-neu-inset: inset 4px 4px 10px rgba(0, 0, 0, 0.5), inset -4px -4px 10px rgba(255, 255, 255, 0.05);
+  --shadow-neu-pressed: inset 2px 2px 5px rgba(0, 0, 0, 0.5), inset -2px -2px 5px rgba(255, 255, 255, 0.05);
+
+  --glass-bg: rgba(32, 36, 45, 0.4);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  --glass-blur: blur(12px);
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-text);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@layer components {
+  .glass-panel {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+  }
+
+  .neu-card {
+    background-color: var(--color-surface);
+    box-shadow: var(--shadow-neu-raised);
+    border-radius: 1rem;
+  }
+
+  .neu-button {
+    background-color: var(--color-surface);
+    box-shadow: var(--shadow-neu-raised);
+    color: var(--color-text);
+    transition: all 0.2s ease-in-out;
+  }
+
+  .neu-button:active {
+    box-shadow: var(--shadow-neu-pressed);
+  }
+
+  .neu-input {
+    background-color: var(--color-surface);
+    box-shadow: var(--shadow-neu-inset);
+    color: var(--color-text);
+  }
+
+  .text-gradient {
+    background: linear-gradient(to right, var(--color-primary), var(--color-secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+}
+
+/* Scrollbar styles for modern look */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-background);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-surface);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-muted);
+}
